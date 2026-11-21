@@ -1,71 +1,60 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MI CLUB DE JUEGOS</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #101020;
-      color: white;
-      text-align: center;
-    }
-    header {
-      padding: 45px 20px;
-      background: linear-gradient(135deg, #20205a, #6718a0);
-    }
-    h1 { color: #ffcc33; font-size: 36px; }
-    .btn {
-      display: inline-block;
-      padding: 14px 24px;
-      margin: 8px;
-      background: #ffcc33;
-      color: #161625;
-      border-radius: 10px;
-      text-decoration: none;
-      font-weight: bold;
-      cursor: pointer;
-      border: 0;
-    }
-    .games {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-      gap: 20px;
-      max-width: 1000px;
-      margin: 35px auto;
-      padding: 0 20px;
-    }
-    .game {
-      padding: 35px 15px;
-      background: #22223b;
-      border-radius: 18px;
-      border: 1px solid #41416a;
-    }
-    .game span { font-size: 55px; }
-    .game h2 { color: #ffcc33; }
-    footer { padding: 30px; color: #aaa; }
-  </style>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MI CLUB DE JUEGOS</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#101020;color:#fff;font-family:Arial,sans-serif}header{text-align:center;padding:42px 18px;background:linear-gradient(135deg,#20205a,#6718a0)}h1,h2{color:#ffcc33}h1{margin:0 0 12px}.wrap{max-width:980px;margin:auto;padding:24px 18px}.panel{background:#22223b;border:1px solid #41416a;border-radius:16px;padding:22px;margin:20px auto;max-width:500px}input{width:100%;padding:13px;margin:8px 0 14px;border:1px solid #656585;border-radius:9px;background:#141426;color:white;font-size:16px}button{padding:12px 18px;background:#ffcc33;border:0;border-radius:9px;font-weight:bold;cursor:pointer;margin:5px;color:#161625}button:disabled{opacity:.55;cursor:wait}.secondary{background:#dedcf2}.hidden{display:none}.games{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px}.game{text-align:center;background:#22223b;border-radius:16px;padding:25px}.emoji{font-size:48px}.muted{color:#bbb}#message{white-space:pre-wrap;line-height:1.5}footer{text-align:center;color:#aaa;padding:24px}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body>
-  <header>
-    <h1>🎲 MI CLUB DE JUEGOS 🎲</h1>
-    <p>¡Tu club de juegos de mesa online!</p>
-    <p>Regístrate gratis y recibe 1,000 monedas virtuales de bienvenida.</p>
-    <button class="btn" type="button" disabled>Registrarse (próximamente)</button>
-    <button class="btn" type="button" disabled>Iniciar sesión (próximamente)</button>
-  </header>
-  <main>
-    <h2>Elige tu juego favorito</h2>
-    <section class="games">
-      <div class="game"><span>🁣</span><h2>Dominó</h2><p>Próximamente</p></div>
-      <div class="game"><span>♟️</span><h2>Damas</h2><p>Próximamente</p></div>
-      <div class="game"><span>♚</span><h2>Ajedrez</h2><p>Próximamente</p></div>
-      <div class="game"><span>🎲</span><h2>Parchís</h2><p>Próximamente</p></div>
-    </section>
-  </main>
-  <footer>MI CLUB DE JUEGOS © 2026</footer>
-</body>
-</html>
+<header><h1>🎲 MI CLUB DE JUEGOS 🎲</h1><p>¡Tu club de juegos de mesa online!</p><p>Regístrate gratis y recibe 1,000 monedas virtuales de bienvenida.</p></header>
+<main class="wrap">
+<section class="panel" id="auth-panel"><h2>Entrar al club</h2><label for="email">Correo electrónico</label><input id="email" type="email" autocomplete="email" placeholder="correo@ejemplo.com"><label for="password">Contraseña (mínimo 8 caracteres)</label><input id="password" type="password" minlength="8" autocomplete="current-password" placeholder="Tu contraseña"><div><button id="register">Registrarse</button><button class="secondary" id="login">Iniciar sesión</button></div><p class="muted">Si te registras, revisa tu correo para confirmar tu cuenta.</p></section>
+<section class="panel hidden" id="account-panel"><h2>Mi cuenta</h2><p id="player-email"></p><p>🪙 Mi saldo: <strong id="balance">Cargando...</strong> monedas virtuales</p><button id="logout">Cerrar sesión</button></section>
+<p id="message" role="status" aria-live="polite"></p>
+<h2 style="text-align:center">Elige tu juego favorito</h2><section class="games"><div class="game"><div class="emoji">🁣</div><h2>Dominó</h2><p class="muted">Próximamente</p></div><div class="game"><div class="emoji">♟️</div><h2>Damas</h2><p class="muted">Próximamente</p></div><div class="game"><div class="emoji">♚</div><h2>Ajedrez</h2><p class="muted">Próximamente</p></div><div class="game"><div class="emoji">🎲</div><h2>Parchís</h2><p class="muted">Próximamente</p></div></section>
+</main><footer>MI CLUB DE JUEGOS © 2026 · Monedas sin valor monetario ni canje</footer>
+<script>
+// REEMPLAZA SOLO ESTOS DOS VALORES CON LOS DE TU PROYECTO SUPABASE.
+const SUPABASE_URL = 'https://wiaopnmprhnhtjnhvimc.supabase.co/rest/v1/';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_BMGkDZUSCDht8W_XQO6IZA_FzIKK4FD';
+const message = document.getElementById('message');
+const configured = SUPABASE_URL.startsWith('https://') && !SUPABASE_URL.includes('PEGA_AQUI') && !SUPABASE_PUBLISHABLE_KEY.includes('PEGA_AQUI');
+let client;
+if (!configured) {message.textContent='Configuración pendiente: agrega Project URL y Publishable key al archivo index.html.';document.getElementById('register').disabled=true;document.getElementById('login').disabled=true;}
+else {client = window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);}
+const email=()=>document.getElementById('email').value.trim();
+const password=()=>document.getElementById('password').value;
+const setMessage=(txt)=>{message.textContent=txt};
+const setBusy=(busy)=>{document.getElementById('register').disabled=busy;document.getElementById('login').disabled=busy};
+async function updateView(session){
+ const user=session?.user;
+ document.getElementById('auth-panel').classList.toggle('hidden',!!user);
+ document.getElementById('account-panel').classList.toggle('hidden',!user);
+ if(!user)return;
+ document.getElementById('player-email').textContent=user.email||'';
+ document.getElementById('balance').textContent='Cargando...';
+ const {data,error}=await client.from('wallets').select('balance').eq('user_id',user.id).single();
+ document.getElementById('balance').textContent=error?'No disponible':Number(data.balance).toLocaleString('es-ES');
+ if(error)setMessage('No se pudo consultar el saldo. Comprueba la configuración de Supabase.');
+}
+if(client){
+ document.getElementById('register').onclick=async()=>{
+  if(!email()||password().length<8){setMessage('Introduce un correo válido y una contraseña de al menos 8 caracteres.');return}
+  setBusy(true);setMessage('Creando cuenta...');
+  const {error}=await client.auth.signUp({email:email(),password:password(),options:{emailRedirectTo:window.location.origin}});
+  setBusy(false);setMessage(error?error.message:'Solicitud recibida. Revisa tu correo para confirmar tu cuenta. Si ya existe una cuenta, inicia sesión.');
+ };
+ document.getElementById('login').onclick=async()=>{
+  if(!email()||!password()){setMessage('Escribe tu correo y contraseña.');return}
+  setBusy(true);setMessage('Iniciando sesión...');
+  const {error}=await client.auth.signInWithPassword({email:email(),password:password()});
+  setBusy(false);setMessage(error?error.message:'Sesión iniciada.');
+ };
+ document.getElementById('logout').onclick=async()=>{const {error}=await client.auth.signOut();setMessage(error?error.message:'Sesión cerrada.');};
+ client.auth.onAuthStateChange((_event,session)=>{setTimeout(()=>{updateView(session).catch(()=>setMessage('No se pudo cargar la cuenta.'))},0)});
+ client.auth.getSession().then(({data})=>updateView(data.session)).catch(()=>setMessage('No se pudo comprobar la sesión.'));
+}
+</script>
