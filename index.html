@@ -27,7 +27,7 @@
 <div id="my-room" class="wallet hidden" aria-live="polite"></div>
 <h3>Unirse con código</h3><label for="invite-code">Código de invitación (8 caracteres)</label><input id="invite-code" maxlength="8" autocomplete="off" placeholder="Ejemplo: A1B2C3D4"><button id="join-code">Unirse a sala</button>
 <h3>Salas públicas disponibles</h3><button id="refresh-rooms" class="secondary">Actualizar lista</button><div id="public-rooms" class="room-list"><p class="muted">Cargando salas...</p></div>
-<p id="room-message" role="status" aria-live="polite"></p>
+<p id="room-message" role="status" aria-live="polite" style="padding:12px;background:#17172d;border-radius:9px;min-height:44px">Los mensajes de creación y unión aparecerán aquí.</p>
 <p class="room-note">Por ahora cada sala admite dos jugadores. Crear una sala no descuenta monedas.</p>
 </section>
 <p id="message" role="status" aria-live="polite"></p>
@@ -85,7 +85,7 @@ async function updateView(session){
 
 const gameLabels={domino:'Dominó',damas:'Damas',ajedrez:'Ajedrez',parchis:'Parchís'};
 const roomMessage=document.getElementById('room-message');
-const setRoomMessage=(value)=>{roomMessage.textContent=value};
+const setRoomMessage=(value)=>{roomMessage.textContent=value;roomMessage.scrollIntoView({behavior:'smooth',block:'nearest'});};
 const roomBusy=(value)=>{for(const id of ['create-room','join-code','refresh-rooms'])document.getElementById(id).disabled=value};
 function showRoom(room){
  const area=document.getElementById('my-room');area.replaceChildren();
