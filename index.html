@@ -17,6 +17,7 @@
 <h2 style="text-align:center">Elige tu juego favorito</h2><section class="games"><div class="game"><div class="emoji">🁣</div><h2>Dominó</h2><p class="muted">Próximamente</p></div><div class="game"><div class="emoji">♟️</div><h2>Damas</h2><p class="muted">Próximamente</p></div><div class="game"><div class="emoji">♚</div><h2>Ajedrez</h2><p class="muted">Próximamente</p></div><div class="game"><div class="emoji">🎲</div><h2>Parchís</h2><p class="muted">Próximamente</p></div></section>
 </main><footer>MI CLUB DE JUEGOS © 2026 · Monedas sin valor monetario ni canje</footer>
 <script>
+// REEMPLAZA SOLO ESTOS DOS VALORES CON LOS DE TU PROYECTO SUPABASE.
 const SUPABASE_URL = 'https://wiaopnmprhnhtjnhvimc.supabase.co/rest/v1/';
 const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_BMGkDZUSCDht8W_XQO6IZA_FzIKK4FD';
 const message = document.getElementById('message');
@@ -57,3 +58,4 @@ if(client){
  client.auth.getSession().then(({data})=>updateView(data.session)).catch(()=>setMessage('No se pudo comprobar la sesión.'));
 }
 </script>
+</body></html>
