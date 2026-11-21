@@ -4,7 +4,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>MI CLUB DE JUEGOS</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#101020;color:#fff;font-family:Arial,sans-serif}header{text-align:center;padding:42px 18px;background:linear-gradient(135deg,#20205a,#6718a0)}h1,h2{color:#ffcc33}h1{margin:0 0 12px}.wrap{max-width:980px;margin:auto;padding:24px 18px}.panel{background:#22223b;border:1px solid #41416a;border-radius:16px;padding:22px;margin:20px auto;max-width:500px}input{width:100%;padding:13px;margin:8px 0 14px;border:1px solid #656585;border-radius:9px;background:#141426;color:white;font-size:16px}button{padding:12px 18px;background:#ffcc33;border:0;border-radius:9px;font-weight:bold;cursor:pointer;margin:5px;color:#161625}button:disabled{opacity:.55;cursor:wait}.secondary{background:#dedcf2}.hidden{display:none}.games{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px}.game{text-align:center;background:#22223b;border-radius:16px;padding:25px}.emoji{font-size:48px}.muted{color:#bbb}#message{white-space:pre-wrap;line-height:1.5}footer{text-align:center;color:#aaa;padding:24px}
+*{box-sizing:border-box}body{margin:0;background:#101020;color:#fff;font-family:Arial,sans-serif}header{text-align:center;padding:42px 18px;background:linear-gradient(135deg,#20205a,#6718a0)}h1,h2{color:#ffcc33}h1{margin:0 0 12px}.wrap{max-width:980px;margin:auto;padding:24px 18px}.panel{background:#22223b;border:1px solid #41416a;border-radius:16px;padding:22px;margin:20px auto;max-width:500px}input{width:100%;padding:13px;margin:8px 0 14px;border:1px solid #656585;border-radius:9px;background:#141426;color:white;font-size:16px}button{padding:12px 18px;background:#ffcc33;border:0;border-radius:9px;font-weight:bold;cursor:pointer;margin:5px;color:#161625}button:disabled{opacity:.55;cursor:wait}.secondary{background:#dedcf2}.hidden{display:none}.games{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px}.game{text-align:center;background:#22223b;border-radius:16px;padding:25px}.emoji{font-size:48px}.muted{color:#bbb}#message{white-space:pre-wrap;line-height:1.5}footer{text-align:center;color:#aaa;padding:24px}.account{max-width:760px}.profile-head{display:flex;align-items:center;gap:18px;flex-wrap:wrap}.avatar{font-size:46px;background:#343456;border-radius:50%;width:85px;height:85px;display:grid;place-items:center}.wallet{background:#17172d;border:1px solid #55557a;border-radius:14px;padding:20px;margin:20px 0}.wallet strong{font-size:32px;color:#ffcc33}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.stat{background:#17172d;padding:15px 5px;border-radius:10px;text-align:center}.stat strong{font-size:24px;color:#ffcc33}.stat small{display:block;color:#bbb;margin-top:7px}.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.history{padding:0;list-style:none}.history li{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid #44445f}.history b{color:#8ff0b2}select{width:100%;padding:13px;margin:8px 0 14px;border:1px solid #656585;border-radius:9px;background:#141426;color:#fff;font-size:16px}@media(max-width:540px){.field-row{grid-template-columns:1fr}.stats{gap:5px}.stat{padding:12px 3px}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
@@ -12,7 +12,13 @@
 <header><h1>🎲 MI CLUB DE JUEGOS 🎲</h1><p>¡Tu club de juegos de mesa online!</p><p>Regístrate gratis y recibe 1,000 monedas virtuales de bienvenida.</p></header>
 <main class="wrap">
 <section class="panel" id="auth-panel"><h2>Entrar al club</h2><label for="email">Correo electrónico</label><input id="email" type="email" autocomplete="email" placeholder="correo@ejemplo.com"><label for="password">Contraseña (mínimo 8 caracteres)</label><input id="password" type="password" minlength="8" autocomplete="current-password" placeholder="Tu contraseña"><div><button id="register">Registrarse</button><button class="secondary" id="login">Iniciar sesión</button></div><p class="muted">Si te registras, revisa tu correo para confirmar tu cuenta.</p></section>
-<section class="panel hidden" id="account-panel"><h2>Mi cuenta</h2><p id="player-email"></p><p>🪙 Mi saldo: <strong id="balance">Cargando...</strong> monedas virtuales</p><button id="logout">Cerrar sesión</button></section>
+<section class="panel account hidden" id="account-panel">
+<div class="profile-head"><div class="avatar" id="avatar-preview" aria-label="Avatar del jugador">🎮</div><div><h2>Mi perfil de jugador</h2><p id="player-email" class="muted"></p><p id="player-name"></p></div></div>
+<div class="wallet"><p class="muted">🪙 MI BILLETERA VIRTUAL</p><strong id="balance">Cargando...</strong> <span>monedas</span><p class="muted">Sin valor monetario ni canje</p></div>
+<h2>Personalizar perfil</h2><div class="field-row"><div><label for="username">Nombre de jugador</label><input id="username" maxlength="24" placeholder="Tu nombre en el club"></div><div><label for="avatar-choice">Elige tu avatar</label><select id="avatar-choice"><option value="🎮">🎮 Gamer</option><option value="🎲">🎲 Dados</option><option value="♟️">♟️ Ajedrez</option><option value="🦁">🦁 León</option><option value="🐺">🐺 Lobo</option><option value="🔥">🔥 Fuego</option><option value="👑">👑 Corona</option><option value="⭐">⭐ Estrella</option></select></div></div><button id="save-profile">Guardar perfil</button>
+<h2>Mis estadísticas</h2><div class="stats"><div class="stat"><strong>—</strong><small>Partidas</small></div><div class="stat"><strong>—</strong><small>Victorias</small></div><div class="stat"><strong>—</strong><small>Derrotas</small></div></div><p class="muted">Las estadísticas se activarán cuando estén disponibles las partidas online.</p>
+<h2>Historial de monedas</h2><ul id="transactions" class="history"><li>Cargando movimientos...</li></ul>
+<button id="logout" class="secondary">Cerrar sesión</button></section>
 <p id="message" role="status" aria-live="polite"></p>
 <h2 style="text-align:center">Elige tu juego favorito</h2><section class="games"><div class="game"><div class="emoji">🁣</div><h2>Dominó</h2><p class="muted">Próximamente</p></div><div class="game"><div class="emoji">♟️</div><h2>Damas</h2><p class="muted">Próximamente</p></div><div class="game"><div class="emoji">♚</div><h2>Ajedrez</h2><p class="muted">Próximamente</p></div><div class="game"><div class="emoji">🎲</div><h2>Parchís</h2><p class="muted">Próximamente</p></div></section>
 </main><footer>MI CLUB DE JUEGOS © 2026 · Monedas sin valor monetario ni canje</footer>
@@ -29,18 +35,56 @@ const email=()=>document.getElementById('email').value.trim();
 const password=()=>document.getElementById('password').value;
 const setMessage=(txt)=>{message.textContent=txt};
 const setBusy=(busy)=>{document.getElementById('register').disabled=busy;document.getElementById('login').disabled=busy};
+let currentUserId=null;
+const allowedAvatars=['🎮','🎲','♟️','🦁','🐺','🔥','👑','⭐'];
 async function updateView(session){
  const user=session?.user;
+ currentUserId=user?.id||null;
  document.getElementById('auth-panel').classList.toggle('hidden',!!user);
  document.getElementById('account-panel').classList.toggle('hidden',!user);
  if(!user)return;
  document.getElementById('player-email').textContent=user.email||'';
  document.getElementById('balance').textContent='Cargando...';
- const {data,error}=await client.from('wallets').select('balance').eq('user_id',user.id).single();
- document.getElementById('balance').textContent=error?'No disponible':Number(data.balance).toLocaleString('es-ES');
- if(error)setMessage('No se pudo consultar el saldo. Comprueba la configuración de Supabase.');
+ const [wallet,profile,transactions]=await Promise.all([
+  client.from('wallets').select('balance').eq('user_id',user.id).single(),
+  client.from('profiles').select('username,avatar_url').eq('id',user.id).single(),
+  client.from('wallet_transactions').select('amount,description,created_at').eq('user_id',user.id).order('created_at',{ascending:false}).limit(20)
+ ]);
+ if(currentUserId!==user.id)return;
+ document.getElementById('balance').textContent=wallet.error?'No disponible':Number(wallet.data.balance).toLocaleString('es-ES');
+ const name=profile.data?.username||'';
+ const avatar=allowedAvatars.includes(profile.data?.avatar_url)?profile.data.avatar_url:'🎮';
+ document.getElementById('username').value=name;
+ document.getElementById('avatar-choice').value=avatar;
+ document.getElementById('avatar-preview').textContent=avatar;
+ document.getElementById('player-name').textContent=name||'Jugador sin nombre';
+ const history=document.getElementById('transactions');history.replaceChildren();
+ if(transactions.error){const li=document.createElement('li');li.textContent='No se pudo consultar el historial.';history.append(li)}
+ else if(!transactions.data?.length){const li=document.createElement('li');li.textContent='Aún no hay movimientos.';history.append(li)}
+ else for(const tx of transactions.data){
+  const li=document.createElement('li');const left=document.createElement('span');const right=document.createElement('b');
+  left.textContent=(tx.description||'Movimiento')+' · '+new Date(tx.created_at).toLocaleDateString('es-ES');
+  right.textContent=(tx.amount>0?'+':'')+Number(tx.amount).toLocaleString('es-ES');li.append(left,right);history.append(li);
+ }
+ if(wallet.error||profile.error)setMessage('No se pudieron cargar todos los datos del perfil.');
 }
+
 if(client){
+ document.getElementById('avatar-choice').addEventListener('change',e=>{document.getElementById('avatar-preview').textContent=e.target.value});
+ document.getElementById('save-profile').onclick=async()=>{
+  const name=document.getElementById('username').value.trim();
+  const avatar=document.getElementById('avatar-choice').value;
+  if(name.length<3||name.length>24){setMessage('El nombre debe tener entre 3 y 24 caracteres.');return}
+  if(!allowedAvatars.includes(avatar)){setMessage('Selecciona un avatar válido.');return}
+  const {data:{user},error:authError}=await client.auth.getUser();
+  if(authError||!user){setMessage('Vuelve a iniciar sesión para guardar tu perfil.');return}
+  const btn=document.getElementById('save-profile');btn.disabled=true;
+  const {error}=await client.from('profiles').update({username:name,avatar_url:avatar}).eq('id',user.id);
+  btn.disabled=false;
+  if(error){setMessage('No se pudo guardar el perfil: '+error.message);return}
+  document.getElementById('player-name').textContent=name;
+  setMessage('¡Perfil guardado correctamente!');
+ };
  document.getElementById('register').onclick=async()=>{
   if(!email()||password().length<8){setMessage('Introduce un correo válido y una contraseña de al menos 8 caracteres.');return}
   setBusy(true);setMessage('Creando cuenta...');
