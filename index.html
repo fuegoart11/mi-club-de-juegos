@@ -5,6 +5,7 @@
 <title>MI CLUB DE JUEGOS</title>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#101020;color:#fff;font-family:Arial,sans-serif}header{text-align:center;padding:42px 18px;background:linear-gradient(135deg,#20205a,#6718a0)}h1,h2{color:#ffcc33}h1{margin:0 0 12px}.wrap{max-width:980px;margin:auto;padding:24px 18px}.panel{background:#22223b;border:1px solid #41416a;border-radius:16px;padding:22px;margin:20px auto;max-width:500px}input{width:100%;padding:13px;margin:8px 0 14px;border:1px solid #656585;border-radius:9px;background:#141426;color:white;font-size:16px}button{padding:12px 18px;background:#ffcc33;border:0;border-radius:9px;font-weight:bold;cursor:pointer;margin:5px;color:#161625}button:disabled{opacity:.55;cursor:wait}.secondary{background:#dedcf2}.hidden{display:none}.games{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px}.game{text-align:center;background:#22223b;border-radius:16px;padding:25px}.emoji{font-size:48px}.muted{color:#bbb}#message{white-space:pre-wrap;line-height:1.5}footer{text-align:center;color:#aaa;padding:24px}.account{max-width:760px}.profile-head{display:flex;align-items:center;gap:18px;flex-wrap:wrap}.avatar{font-size:46px;background:#343456;border-radius:50%;width:85px;height:85px;display:grid;place-items:center}.wallet{background:#17172d;border:1px solid #55557a;border-radius:14px;padding:20px;margin:20px 0}.wallet strong{font-size:32px;color:#ffcc33}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.stat{background:#17172d;padding:15px 5px;border-radius:10px;text-align:center}.stat strong{font-size:24px;color:#ffcc33}.stat small{display:block;color:#bbb;margin-top:7px}.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.history{padding:0;list-style:none}.history li{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid #44445f}.history b{color:#8ff0b2}select{width:100%;padding:13px;margin:8px 0 14px;border:1px solid #656585;border-radius:9px;background:#141426;color:#fff;font-size:16px}@media(max-width:540px){.field-row{grid-template-columns:1fr}.stats{gap:5px}.stat{padding:12px 3px}}
+.room-controls{display:grid;grid-template-columns:1fr 1fr;gap:12px}.room-list{display:grid;gap:10px}.room-item{background:#17172d;border:1px solid #454565;border-radius:12px;padding:14px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.room-code{font-size:21px;letter-spacing:2px;color:#ffcc33;font-weight:bold}.room-field{margin-bottom:8px}.room-panel{max-width:760px}.room-meta{color:#ccc;font-size:14px}.room-note{color:#bbb;font-size:13px}@media(max-width:540px){.room-controls{grid-template-columns:1fr}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
@@ -19,6 +20,16 @@
 <h2>Mis estadísticas</h2><div class="stats"><div class="stat"><strong>—</strong><small>Partidas</small></div><div class="stat"><strong>—</strong><small>Victorias</small></div><div class="stat"><strong>—</strong><small>Derrotas</small></div></div><p class="muted">Las estadísticas se activarán cuando estén disponibles las partidas online.</p>
 <h2>Historial de monedas</h2><ul id="transactions" class="history"><li>Cargando movimientos...</li></ul>
 <button id="logout" class="secondary">Cerrar sesión</button></section>
+<section class="panel room-panel hidden" id="rooms-panel">
+<h2>🏠 Salas multijugador</h2><p class="muted">Crea una sala de prueba o únete a otra. Las partidas aún no están habilitadas.</p>
+<div class="room-controls"><div><label for="room-game">Juego</label><select id="room-game"><option value="domino">Dominó</option><option value="damas">Damas</option><option value="ajedrez">Ajedrez</option><option value="parchis">Parchís</option></select></div><div><label for="room-visibility">Tipo de sala</label><select id="room-visibility"><option value="public">Pública</option><option value="private">Privada</option></select></div></div>
+<button id="create-room">Crear sala</button>
+<div id="my-room" class="wallet hidden" aria-live="polite"></div>
+<h3>Unirse con código</h3><label for="invite-code">Código de invitación (8 caracteres)</label><input id="invite-code" maxlength="8" autocomplete="off" placeholder="Ejemplo: A1B2C3D4"><button id="join-code">Unirse a sala</button>
+<h3>Salas públicas disponibles</h3><button id="refresh-rooms" class="secondary">Actualizar lista</button><div id="public-rooms" class="room-list"><p class="muted">Cargando salas...</p></div>
+<p id="room-message" role="status" aria-live="polite"></p>
+<p class="room-note">Por ahora cada sala admite dos jugadores. Crear una sala no descuenta monedas.</p>
+</section>
 <p id="message" role="status" aria-live="polite"></p>
 <h2 style="text-align:center">Elige tu juego favorito</h2><section class="games"><div class="game"><div class="emoji">🁣</div><h2>Dominó</h2><p class="muted">Próximamente</p></div><div class="game"><div class="emoji">♟️</div><h2>Damas</h2><p class="muted">Próximamente</p></div><div class="game"><div class="emoji">♚</div><h2>Ajedrez</h2><p class="muted">Próximamente</p></div><div class="game"><div class="emoji">🎲</div><h2>Parchís</h2><p class="muted">Próximamente</p></div></section>
 </main><footer>MI CLUB DE JUEGOS © 2026 · Monedas sin valor monetario ni canje</footer>
@@ -42,6 +53,8 @@ async function updateView(session){
  currentUserId=user?.id||null;
  document.getElementById('auth-panel').classList.toggle('hidden',!!user);
  document.getElementById('account-panel').classList.toggle('hidden',!user);
+ document.getElementById('rooms-panel').classList.toggle('hidden',!user);
+ if(!user){document.getElementById('my-room').classList.add('hidden');document.getElementById('public-rooms').replaceChildren();}
  if(!user)return;
  document.getElementById('player-email').textContent=user.email||'';
  document.getElementById('balance').textContent='Cargando...';
@@ -67,9 +80,74 @@ async function updateView(session){
   right.textContent=(tx.amount>0?'+':'')+Number(tx.amount).toLocaleString('es-ES');li.append(left,right);history.append(li);
  }
  if(wallet.error||profile.error)setMessage('No se pudieron cargar todos los datos del perfil.');
+ await Promise.all([loadPublicRooms(),loadMyRoom(user.id)]);
 }
 
+const gameLabels={domino:'Dominó',damas:'Damas',ajedrez:'Ajedrez',parchis:'Parchís'};
+const roomMessage=document.getElementById('room-message');
+const setRoomMessage=(value)=>{roomMessage.textContent=value};
+const roomBusy=(value)=>{for(const id of ['create-room','join-code','refresh-rooms'])document.getElementById(id).disabled=value};
+function showRoom(room){
+ const area=document.getElementById('my-room');area.replaceChildren();
+ if(!room){area.classList.add('hidden');return}
+ area.classList.remove('hidden');
+ const heading=document.createElement('h3');heading.textContent='Mi sala: '+(gameLabels[room.game]||room.game);
+ const status=document.createElement('p');status.textContent=room.status==='waiting'?'Esperando a otro jugador':room.status==='full'?'Dos jugadores conectados (sin partida todavía)':'Sala cerrada';
+ const visibility=document.createElement('p');visibility.className='room-meta';visibility.textContent=room.visibility==='private'?'Sala privada':'Sala pública';
+ const code=document.createElement('p');code.className='room-code';code.textContent=room.invite_code;
+ const hint=document.createElement('p');hint.className='room-note';hint.textContent='Comparte este código con otro jugador para que se una.';
+ area.append(heading,status,visibility,code,hint);
+}
+async function loadMyRoom(userId){
+ const {data,error}=await client.from('game_rooms').select('id,game,visibility,invite_code,status,owner_id,guest_id,created_at').or('owner_id.eq.'+userId+',guest_id.eq.'+userId).neq('status','closed').order('created_at',{ascending:false}).limit(1);
+ if(currentUserId!==userId)return;
+ if(error){setRoomMessage('No se pudo consultar tu sala: '+error.message);return}
+ showRoom(data?.[0]||null);
+}
+async function loadPublicRooms(){
+ if(!currentUserId)return;
+ const userId=currentUserId;
+ const list=document.getElementById('public-rooms');
+ const {data,error}=await client.from('game_rooms').select('id,game,created_at').eq('visibility','public').eq('status','waiting').order('created_at',{ascending:false}).limit(30);
+ if(currentUserId!==userId)return;
+ list.replaceChildren();
+ if(error){const p=document.createElement('p');p.textContent='No se pudieron cargar las salas: '+error.message;list.append(p);return}
+ if(!data?.length){const p=document.createElement('p');p.className='muted';p.textContent='No hay salas públicas esperando jugadores.';list.append(p);return}
+ for(const room of data){
+  const item=document.createElement('div');item.className='room-item';
+  const title=document.createElement('span');title.textContent=(gameLabels[room.game]||room.game)+' · Esperando jugador';
+  const btn=document.createElement('button');btn.textContent='Unirse';btn.type='button';
+  btn.onclick=()=>joinRoom({p_room_id:room.id,p_code:null});
+  item.append(title,btn);list.append(item);
+ }
+}
+async function joinRoom(params){
+ roomBusy(true);setRoomMessage('Buscando sala...');
+ try{
+  const {data,error}=await client.rpc('join_game_room',params);
+  if(error)throw error;
+  setRoomMessage('¡Te uniste a la sala! Todavía no hay partidas activas.');
+  await Promise.all([loadMyRoom(currentUserId),loadPublicRooms()]);
+ }catch(e){setRoomMessage('No se pudo entrar: '+(e.message||String(e)))}
+ finally{roomBusy(false)}
+}
 if(client){
+ document.getElementById('create-room').onclick=async()=>{
+  roomBusy(true);setRoomMessage('Creando sala...');
+  try{
+   const {error}=await client.rpc('create_game_room',{p_game:document.getElementById('room-game').value,p_visibility:document.getElementById('room-visibility').value});
+   if(error)throw error;
+   setRoomMessage('Sala creada. Comparte el código para invitar a otro jugador.');
+   await Promise.all([loadMyRoom(currentUserId),loadPublicRooms()]);
+  }catch(e){setRoomMessage('No se pudo crear la sala: '+(e.message||String(e)))}
+  finally{roomBusy(false)}
+ };
+ document.getElementById('join-code').onclick=()=>{
+  const code=document.getElementById('invite-code').value.trim().toUpperCase();
+  if(!/^[A-F0-9]{8}$/.test(code)){setRoomMessage('Escribe un código válido de 8 caracteres.');return}
+  joinRoom({p_room_id:null,p_code:code});
+ };
+ document.getElementById('refresh-rooms').onclick=()=>loadPublicRooms();
  document.getElementById('avatar-choice').addEventListener('change',e=>{document.getElementById('avatar-preview').textContent=e.target.value});
  document.getElementById('save-profile').onclick=async()=>{
   const name=document.getElementById('username').value.trim();
