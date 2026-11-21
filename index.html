@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MI CLUB DE JUEGOS</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #101020;
+      color: white;
+      text-align: center;
+    }
+    header {
+      padding: 45px 20px;
+      background: linear-gradient(135deg, #20205a, #6718a0);
+    }
+    h1 { color: #ffcc33; font-size: 36px; }
+    .btn {
+      display: inline-block;
+      padding: 14px 24px;
+      margin: 8px;
+      background: #ffcc33;
+      color: #161625;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+      border: 0;
+    }
+    .games {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
+      margin: 35px auto;
+      padding: 0 20px;
+    }
+    .game {
+      padding: 35px 15px;
+      background: #22223b;
+      border-radius: 18px;
+      border: 1px solid #41416a;
+    }
+    .game span { font-size: 55px; }
+    .game h2 { color: #ffcc33; }
+    footer { padding: 30px; color: #aaa; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🎲 MI CLUB DE JUEGOS 🎲</h1>
+    <p>¡Tu club de juegos de mesa online!</p>
+    <p>Regístrate gratis y recibe 1,000 monedas virtuales de bienvenida.</p>
+    <button class="btn" type="button" disabled>Registrarse (próximamente)</button>
+    <button class="btn" type="button" disabled>Iniciar sesión (próximamente)</button>
+  </header>
+  <main>
+    <h2>Elige tu juego favorito</h2>
+    <section class="games">
+      <div class="game"><span>🁣</span><h2>Dominó</h2><p>Próximamente</p></div>
+      <div class="game"><span>♟️</span><h2>Damas</h2><p>Próximamente</p></div>
+      <div class="game"><span>♚</span><h2>Ajedrez</h2><p>Próximamente</p></div>
+      <div class="game"><span>🎲</span><h2>Parchís</h2><p>Próximamente</p></div>
+    </section>
+  </main>
+  <footer>MI CLUB DE JUEGOS © 2026</footer>
+</body>
+</html>
